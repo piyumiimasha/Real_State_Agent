@@ -1,0 +1,121 @@
+# Configuration for Context Engineering RAG System
+# Edit this file to customize behavior without changing code
+
+# ============================================================================
+# Provider Settings
+# ============================================================================
+provider:
+  # Which provider to use: "openrouter" (recommended) or "openai"
+  # OpenRouter gives you access to ALL providers with one API key
+  default: openrouter
+  
+  # Model tier to use: "general", "strong", or "reason"
+  tier: general
+  
+  # OpenRouter base URL
+  openrouter_base_url: https://openrouter.ai/api/v1
+
+# ============================================================================
+# LLM Defaults
+# ============================================================================
+llm:
+  temperature: 0.0
+  max_tokens: 2000
+  streaming: false
+
+# ============================================================================
+# Embedding Settings
+# ============================================================================
+embedding:
+  # Model tier: "default" or "small"
+  tier: default
+  batch_size: 100
+  show_progress: false
+
+# ============================================================================
+# Chunking Configuration
+# ============================================================================
+chunking:
+  # Fixed-size chunking
+  fixed:
+    chunk_size: 800
+    chunk_overlap: 100
+  
+  # Semantic chunking
+  semantic:
+    max_chunk_size: 1000
+    min_chunk_size: 200
+  
+  # Sliding-window chunking
+  sliding:
+    window_size: 512
+    stride_size: 256
+  
+  # Parent-child chunking
+  parent_child:
+    parent_size: 1200
+    child_size: 250
+    child_overlap: 50
+  
+  # Late chunking
+  late:
+    base_size: 1000
+    split_size: 300
+    context_window: 150
+
+# ============================================================================
+# Retrieval Configuration
+# ============================================================================
+retrieval:
+  top_k: 4
+  similarity_threshold: 0.7
+
+# ============================================================================
+# CAG (Cache-Augmented Generation) - Semantic Cache
+# ============================================================================
+cag:
+  cache_ttl: 86400  # 24 hours in seconds (legacy, use history_ttl_hours)
+  max_cache_size: 1000
+  similarity_threshold: 0.90  # 0.90-0.95 recommended for paraphrase matching
+  history_ttl_hours: 24  # Dynamic history expires after 24 hours
+
+# ============================================================================
+# CRAG (Corrective RAG)
+# ============================================================================
+crag:
+  confidence_threshold: 0.6
+  expanded_k: 8
+
+# ============================================================================
+# Crawling Configuration
+# ============================================================================
+crawling:
+  max_depth: 3
+  delay_seconds: 2.0
+  max_pages: 100
+
+# ============================================================================
+# Paths (relative to project root)
+# ============================================================================
+paths:
+  data_dir: data
+  vector_dir: data/vectorstore
+  markdown_dir: data/primelands_markdown
+  cache_dir: data/cag_cache
+  logs_dir: logs
+
+# ============================================================================
+# Logging
+# ============================================================================
+logging:
+  enabled: true
+  level: INFO  # DEBUG, INFO, WARNING, ERROR
+  log_tokens: true
+  log_latency: true
+
+# ============================================================================
+# Required Environment Variables
+# ============================================================================
+# These must be set in .env file:
+#   - OPENROUTER_API_KEY (if using openrouter provider)
+#   - OPENAI_API_KEY (if using openai provider directly)
