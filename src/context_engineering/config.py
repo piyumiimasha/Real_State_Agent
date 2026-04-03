@@ -103,7 +103,7 @@ EMBEDDING_SHOW_PROGRESS = _get_nested(_CONFIG, "embedding", "show_progress", def
 
 DATA_DIR = _PROJECT_ROOT / _get_nested(_CONFIG, "paths", "data_dir", default="data")
 VECTOR_DIR = _PROJECT_ROOT / _get_nested(_CONFIG, "paths", "vector_dir", default="data/vectorstore")
-MARKDOWN_DIR = _PROJECT_ROOT / _get_nested(_CONFIG, "paths", "markdown_dir", default="data/nawaloka_markdown")
+MARKDOWN_DIR = _PROJECT_ROOT / _get_nested(_CONFIG, "paths", "markdown_dir", default="data/primelands_markdown")
 CACHE_DIR = _PROJECT_ROOT / _get_nested(_CONFIG, "paths", "cache_dir", default="data/cag_cache")
 CRAWL_OUT_DIR = DATA_DIR  # Root for crawl outputs
 
