@@ -10,7 +10,7 @@ Real Estate Intelligence Platform for Prime Lands
 - **Generate**: pass those chunks to the LLM so it answers using *evidence* instead of guessing.
 - **Output**: a final answer plus citations (URLs from the chunks).
 
-**What LCEL means in practice**
+**LCEL  in practice**
 LCEL lets you build this as a clean pipeline of `Runnable` steps. Think of it like:
 
 1) **Query → Retriever**  
@@ -26,11 +26,7 @@ LCEL lets you build this as a clean pipeline of `Runnable` steps. Think of it li
    Ensures the answer includes inline citations and returns it to the user.
 
 **“Proper retriever integration”**
-Means the chain is actually calling your retriever *inside* the LCEL pipeline, not doing it manually outside. That makes it composable and easy to swap retrieval methods.
-
-**“Inline citations with evidence URLs”**
-Each claim in the answer should be followed by its source URL, for example:
-> “The project is in Colombo 05. (https://primelands.lk/...)”
+the chain is actually calling your retriever *inside* the LCEL pipeline, not doing it manually outside. That makes it composable and easy to swap retrieval methods.
 
 That builds trust and makes your answer verifiable.
 
