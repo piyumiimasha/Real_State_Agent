@@ -30,8 +30,50 @@ from context_engineering.config import (
     CRAG_EXPANDED_K,
     TOP_K_RESULTS
 )
-from context_engineering.domain.prompts.rag_templates import RAG_TEMPLATE
-from context_engineering.domain.utils import format_docs, calculate_confidence
+RAG_TEMPLATE = (
+    "You are a helpful assistant. Use the provided context to answer the question. "
+    "If the answer is not in the context, say you do not know.\n\n"
+    "Context:\n{context}\n\n"
+    "Question:\n{question}\n\n"
+    "Answer:"
+)
+
+
+def format_docs(docs: List[Any]) -> str:
+    """
+    Format documents into a single context string.
+    """
+    if not docs:
+        return ""
+    chunks = []
+    for doc in docs:
+        content = getattr(doc, "page_content", str(doc))
+        chunks.append(content.strip())
+    return "\n\n".join(chunk for chunk in chunks if chunk)
+
+
+def calculate_confidence(docs: List[Any], query: str) -> float:
+    """
+    Estimate confidence based on retrieval density and light query overlap.
+    """
+    if not docs:
+        return 0.0
+
+    total_chars = 0
+    overlap_hits = 0
+    query_terms = {t for t in query.lower().split() if t}
+
+    for doc in docs:
+        text = getattr(doc, "page_content", "") or ""
+        total_chars += len(text)
+        if query_terms:
+            tokens = set(text.lower().split())
+            overlap_hits += len(query_terms.intersection(tokens))
+
+    avg_len = total_chars / max(len(docs), 1)
+    length_score = min(avg_len / 1000.0, 1.0)
+    overlap_score = min(overlap_hits / max(len(query_terms), 1), 1.0)
+    return round((0.6 * length_score) + (0.4 * overlap_score), 4)
 
 
 class CRAGService:
@@ -166,7 +208,14 @@ class CRAGService:
         elapsed = time.time() - start
         
         # Extract evidence URLs
-        evidence_urls = list(set([doc.metadata['url'] for doc in final_docs]))
+        evidence_urls = []
+        for doc in final_docs:
+            url = None
+            if hasattr(doc, "metadata") and isinstance(doc.metadata, dict):
+                url = doc.metadata.get("url")
+            if url:
+                evidence_urls.append(url)
+        evidence_urls = list(set(evidence_urls))
         
         return {
             'answer': answer,
