@@ -1,0 +1,44 @@
+general:
+  - "What is Primelands and what types of properties are listed?"
+  - "How do I search for land, apartments, houses, or portfolio properties?"
+  - "Can I filter properties by location, budget, or property type?"
+  - "Are the listings updated regularly?"
+
+property_details:
+  - "Where can I find the price, size, and key features of a property?"
+  - "Do listings include photos, plans, and amenities?"
+  - "How do I check the exact location of a property?"
+  - "Is there a way to compare multiple properties?"
+
+availability_and_reservations:
+  - "How do I check if a property is still available?"
+  - "Can I reserve a property online?"
+  - "What happens after I submit a reservation or inquiry?"
+
+payments_and_financing:
+  - "What payment methods are accepted?"
+  - "Do you offer installment plans or financing options?"
+  - "Are there any booking fees or advance payments?"
+
+site_visits:
+  - "How do I schedule a site visit?"
+  - "Can I request a virtual tour?"
+
+documents_and_legal:
+  - "What documents are required to purchase a property?"
+  - "Are the properties approved by relevant authorities?"
+  - "Will I receive clear title and ownership documents?"
+
+support:
+  - "How can I contact Primelands sales or support?"
+  - "What are the customer support hours?"
+  - "Can I get help choosing the right property?"
+
+promotions:
+  - "Are there ongoing promotions, discounts, or special offers?"
+  - "Do you offer referral benefits or loyalty programs?"
+
+post_purchase:
+  - "What is the process after I make a purchase?"
+  - "How long does the transfer or handover process take?"
+  - "Who do I contact for post-purchase support?"
