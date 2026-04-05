@@ -18,7 +18,7 @@ Modern LCEL approach (NOT legacy chains):
     )
 """
 
-from typing import Any, Dict, List
+from typing import Any, Dict, Iterable, List, Tuple
 import time
 
 from langchain_core.prompts import ChatPromptTemplate
@@ -27,8 +27,72 @@ from langchain_core.runnables import RunnablePassthrough, RunnableParallel, Runn
 from langchain_core.vectorstores import VectorStoreRetriever
 
 from context_engineering.config import TOP_K_RESULTS
-from context_engineering.domain.prompts.rag_templates import RAG_TEMPLATE
-from context_engineering.domain.utils import format_docs
+
+
+RAG_TEMPLATE = """
+You are a real estate assistant for Primelands. Answer the user's question using
+only the provided sources. If the answer is not in the sources, say you do not
+have enough information.
+
+Use inline citations with source numbers in square brackets like [1] or [2].
+Each statement that depends on sources must include a citation.
+
+User question:
+{question}
+
+Sources:
+{context}
+
+Answer:
+""".strip()
+
+
+def _normalize_text(text: str, max_chars: int = 600) -> str:
+    cleaned = " ".join((text or "").split())
+    if len(cleaned) > max_chars:
+        return cleaned[: max_chars - 3].rstrip() + "..."
+    return cleaned
+
+
+def _doc_metadata(doc: Any) -> Dict[str, Any]:
+    metadata = getattr(doc, "metadata", None)
+    return metadata if isinstance(metadata, dict) else {}
+
+
+def _doc_title(metadata: Dict[str, Any]) -> str:
+    for key in ("title", "heading", "property_name", "name"):
+        value = metadata.get(key)
+        if value:
+            return str(value)
+    return "Untitled"
+
+
+def _doc_url(metadata: Dict[str, Any]) -> str:
+    for key in ("url", "source", "link"):
+        value = metadata.get(key)
+        if value:
+            return str(value)
+    return ""
+
+
+def format_docs(docs: Iterable[Any]) -> str:
+    """
+    Format retrieved docs into a numbered source list for inline citations.
+    """
+    lines: List[str] = []
+    for idx, doc in enumerate(docs, start=1):
+        metadata = _doc_metadata(doc)
+        title = _doc_title(metadata)
+        url = _doc_url(metadata)
+        snippet = _normalize_text(getattr(doc, "page_content", ""))
+        header = f"[{idx}] {title}"
+        if url:
+            header = f"{header} - {url}"
+        lines.append(header)
+        if snippet:
+            lines.append(f"Snippet: {snippet}")
+        lines.append("")
+    return "\n".join(lines).strip()
 
 
 def build_rag_chain(
@@ -144,14 +208,20 @@ class RAGService:
         elapsed = time.time() - start
         
         # Extract unique URLs
-        evidence_urls = list(set([doc.metadata['url'] for doc in evidence]))
+        evidence_urls = []
+        for doc in evidence:
+            metadata = _doc_metadata(doc)
+            url = _doc_url(metadata)
+            if url:
+                evidence_urls.append(url)
+        evidence_urls = list(dict.fromkeys(evidence_urls))
         
         return {
-            'answer': answer,
-            'evidence': evidence,
-            'evidence_urls': evidence_urls,
-            'generation_time': elapsed,
-            'num_docs': len(evidence)
+            "answer": answer,
+            "evidence": evidence,
+            "evidence_urls": evidence_urls,
+            "generation_time": elapsed,
+            "num_docs": len(evidence)
         }
     
     def stream(self, query: str):
@@ -183,5 +253,5 @@ class RAGService:
         return results
 
 
-__all__ = ['build_rag_chain', 'RAGService']
+__all__ = ["build_rag_chain", "RAGService", "format_docs", "RAG_TEMPLATE"]
 
