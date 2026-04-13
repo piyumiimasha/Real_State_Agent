@@ -1,0 +1,21 @@
+query,rag_confidence,crag_confidence,correction_applied,rag_answer_relevance,crag_answer_relevance,answer_quality_gain
+What is Primelands?,0.7333,0.7333,False,0.7194,0.6092,-0.1102
+Which apartments are in Colombo?,0.92,0.92,False,0.7667,0.7365,-0.0302
+Do you have properties in Gampaha?,0.4836,0.5,True,0.6581,0.6968,0.0387
+Show listings in Kottawa.,0.2562,0.389,True,0.8302,0.7598,-0.0704
+What is The Seasons Colombo 08?,0.965,0.965,False,0.8489,0.5308,-0.3181
+Are there listings in Kiribathgoda?,0.643,0.643,False,0.7743,0.7916,0.0173
+Which portfolio properties are in Galle?,0.6,0.6,False,0.7761,0.8231,0.047
+Find houses in Kalutara.,0.2732,0.8058,True,0.7471,0.7506,0.0035
+Any land projects in Kaduwatha?,0.9548,0.9548,False,0.8027,0.7862,-0.0165
+What is The Mansion Nawala?,1.0,1.0,False,0.8207,0.6796,-0.1411
+Are there projects in Negombo?,0.92,0.92,False,0.8087,0.7978,-0.0108
+Show apartments in Peliagoda.,0.8,0.8,False,0.7449,0.6246,-0.1203
+List properties in Malabe.,0.4764,0.9191,True,0.7239,0.6537,-0.0702
+Tell me about Skye Blossom Kottawa.,1.0,1.0,False,0.7942,0.6614,-0.1328
+Which properties are in Athurugiriya?,0.8116,0.8116,False,0.7179,0.7548,0.0368
+What is J-Adore Negombo?,0.8,0.8,False,0.76,0.7631,0.0031
+List portfolio properties in Anuradhapura.,0.6,0.6,False,0.761,0.6407,-0.1203
+Do you have land in Ganemulla?,0.4626,0.806,True,0.7374,0.7365,-0.0009
+Find properties in Wariyapola.,0.589,0.5863,True,0.808,0.8198,0.0117
+Show land projects in Kalutara.,0.92,0.92,False,0.6626,0.5763,-0.0863
